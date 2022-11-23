@@ -1,7 +1,6 @@
 from guillotina import configure
+from guillotina.utils import get_object_url
 from guillotina_volto.interfaces.content import ISite
-from guillotina.interfaces import IAbsoluteURL
-from guillotina.component import getMultiAdapter
 from importlib.metadata import version
 import platform
 
@@ -11,7 +10,7 @@ import platform
 )
 async def system(context, request):
 
-    url = getMultiAdapter((context, request), IAbsoluteURL)()
+    url = get_object_url(context, request)
     return {
         "id": f"{url}/@system",
         "pil_version": version("pillow"),

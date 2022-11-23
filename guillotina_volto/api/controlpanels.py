@@ -1,12 +1,11 @@
 from guillotina import configure
 from guillotina_volto.interfaces.content import ISite
-from guillotina.interfaces import IAbsoluteURL
 from guillotina.interfaces import ISchemaFieldSerializeToJson
-from guillotina.component import getMultiAdapter
 from guillotina.component import get_multi_adapter
 from guillotina.contrib.email_validation.interfaces import IValidationSettings
 from guillotina.schema import get_fields_in_order
 from guillotina.utils import resolve_dotted_name
+from guillotina.utils import get_object_url
 from guillotina.utils import get_registry
 from guillotina import app_settings
 
@@ -19,7 +18,7 @@ from guillotina import app_settings
 )
 async def controlpanel(context, request):
 
-    url = getMultiAdapter((context, request), IAbsoluteURL)()
+    url = get_object_url(context, request)
 
     result = []
     for item, value in app_settings.get("controlpanels", {}):
@@ -41,7 +40,7 @@ async def controlpanel(context, request):
 )
 async def controlpanel_element(context, request):
 
-    url = getMultiAdapter((context, request), IAbsoluteURL)()
+    url = get_object_url(context, request)
     type_id = request.matchdict["type_id"]
     registry = await get_registry()
 

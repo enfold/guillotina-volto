@@ -3,10 +3,9 @@ from guillotina.api.service import Service
 from guillotina.auth.role import global_roles
 from guillotina.auth.role import local_roles
 from guillotina_volto.interfaces import ISite
-from guillotina.interfaces import IAbsoluteURL
 from guillotina.interfaces import IRole
 from guillotina.component import get_utility
-from guillotina.component import getMultiAdapter
+from guillotina.utils import get_object_url
 
 
 @configure.service(
@@ -24,7 +23,7 @@ from guillotina.component import getMultiAdapter
 )
 class AvailableRoles(Service):
     async def __call__(self):
-        url = getMultiAdapter((self.context, self.request), IAbsoluteURL)()
+        url = get_object_url(self.context, self.request)
         result = []
         roles = global_roles()
         for role in roles:

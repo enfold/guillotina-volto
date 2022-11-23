@@ -1,11 +1,10 @@
 from guillotina import configure
-from guillotina.interfaces import IAbsoluteURL
 from guillotina.interfaces import IResource
-from guillotina.component import getMultiAdapter
 from guillotina.response import ErrorResponse
 from guillotina.response import HTTPUnauthorized
 from guillotina.response import Response
 from guillotina.utils import get_authenticated_user_id
+from guillotina.utils import get_object_url
 from guillotina.utils import get_security_policy
 from guillotina_volto.interfaces import ICMSBehavior
 
@@ -27,7 +26,7 @@ async def list_comments(context, request):
     if not bhr.allow_discussion:
         raise HTTPUnauthorized(content={"text": "Not available option"})
     await bhr.load()
-    url = getMultiAdapter((context, request), IAbsoluteURL)()
+    url = get_object_url(context, request)
     result = []
     response = {"@id": url + "/@comments", "items": result}
 
@@ -80,7 +79,7 @@ async def add_comment(context, request):
 
     bhr.register()
 
-    url = getMultiAdapter((context, request), IAbsoluteURL)()
+    url = get_object_url(context, request)
     headers = {"Location": url + "/@comments/" + comment_uuid}
     return Response(status=204, headers=headers)
 
@@ -121,7 +120,7 @@ async def add_child_comment(context, request):
 
     bhr.register()
 
-    url = getMultiAdapter((context, request), IAbsoluteURL)()
+    url = get_object_url(context, request)
     headers = {"Location": url + "/@comments/" + new_comment_uuid}
     return Response(status=204, headers=headers)
 
@@ -157,7 +156,7 @@ async def modify_comment(context, request):
 
     bhr.register()
 
-    url = getMultiAdapter((context, request), IAbsoluteURL)()
+    url = get_object_url(context, request)
     headers = {"Location": url + "/@comments/" + comment_id}
     return Response(status=204, headers=headers)
 

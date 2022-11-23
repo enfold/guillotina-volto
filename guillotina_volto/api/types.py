@@ -6,7 +6,6 @@ from guillotina.api.service import Service
 from guillotina.component import getMultiAdapter
 from guillotina.component import query_utility
 from guillotina.component import queryUtility
-from guillotina.interfaces import IAbsoluteURL
 from guillotina_volto.interfaces import ISite
 from guillotina.interfaces import IFactorySerializeToJson
 from guillotina.interfaces import IPermission
@@ -14,6 +13,7 @@ from guillotina.interfaces import IResource
 from guillotina.interfaces import IResourceFactory
 from guillotina.interfaces import IAsyncContainer
 from guillotina.response import HTTPNotFound
+from guillotina.utils import get_object_url
 from guillotina.utils import get_security_policy
 
 # from guillotina.interfaces import IConstrainTypes
@@ -68,7 +68,7 @@ from guillotina_volto.interfaces import ICMSConstrainTypes
 )
 async def get_all_types(context, request):
     result = []
-    base_url = IAbsoluteURL(context, request)()
+    base_url = get_object_url(context, request)
     constrains = ICMSConstrainTypes(context, None)
 
     policy = get_security_policy()

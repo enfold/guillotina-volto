@@ -1,10 +1,10 @@
 from guillotina import configure
 from guillotina.api.service import Service
-from guillotina.interfaces import IAbsoluteURL
 from guillotina_volto.interfaces import ISite
 from guillotina.interfaces import IResource
 from guillotina.utils import find_container
 from guillotina.utils import get_content_depth
+from guillotina.utils import get_object_url
 from guillotina_volto.interfaces import ICMSLayer
 from guillotina_volto.utils import get_search_utility
 
@@ -44,7 +44,7 @@ class Breadcrumbs(Service):
         context = self.context
         while context is not None and not ISite.providedBy(context):
             result.append(
-                {"title": context.title, "@id": IAbsoluteURL(context, self.request)()}
+                {"title": context.title, "@id": get_object_url(context, self.request)}
             )
             context = getattr(context, "__parent__", None)
         result.reverse()

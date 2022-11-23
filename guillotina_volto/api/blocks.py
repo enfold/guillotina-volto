@@ -3,11 +3,11 @@ from os.path import join
 from guillotina import app_settings
 from guillotina import configure
 from guillotina.component import get_multi_adapter
-from guillotina.interfaces import IAbsoluteURL
 from guillotina_volto.interfaces import ISite
 from guillotina.interfaces import ISchemaSerializeToJson
 from guillotina.response import HTTPNotFound
 from guillotina.utils import resolve_dotted_name
+from guillotina.utils import get_object_url
 from guillotina.utils import get_registry
 from guillotina_volto.interfaces import ILayoutComponents
 
@@ -24,7 +24,7 @@ async def get_blocks(context, request):
     for key, item in app_settings["available_blocks"].items():
         result.append(
             {
-                "@id": join(IAbsoluteURL(context)(), "@blocks", item["name"]),
+                "@id": join(get_object_url(context), "@blocks", item["name"]),
                 "title": item["title"],
                 "description": item["description"],
             }

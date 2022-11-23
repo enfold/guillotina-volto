@@ -2,9 +2,8 @@ from guillotina import configure
 from guillotina.interfaces import IResource
 from guillotina_volto.interfaces import ICMSLayer
 from guillotina.utils import get_behavior
+from guillotina.utils import get_object_url
 from guillotina_volto.interfaces import ICMSBehavior
-from guillotina.interfaces import IAbsoluteURL
-from guillotina.component import getMultiAdapter
 from guillotina.utils import get_current_container
 
 
@@ -19,8 +18,8 @@ async def history(context, request):
     bhr = await get_behavior(context, ICMSBehavior)
     container = get_current_container()
     result = []
-    context_url = getMultiAdapter((context, request), IAbsoluteURL)()
-    container_url = getMultiAdapter((container, request), IAbsoluteURL)()
+    context_url = get_object_url(context, request)
+    container_url = get_object_url(container, request)
     for ident, hist_data in enumerate(bhr.history):
         actor = hist_data.get("actor", "")
         type_ = hist_data.get("type", "")
